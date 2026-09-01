@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Common Grounds — Real Estate Photography</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Anton&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper:#FFFFFF;
+    --stone:#F5F2EC;
+    --ink:#15120D;
+    --ink-soft:#6B6459;
+    --ink-faint:#9C9484;
+    --line:rgba(21,18,13,0.10);
+    --gold:#B8862F;
+    --gold-soft:#E7CC90;
+    --gold-tint:#FBF3E2;
+    --navy:#1B2530;
+    --navy-soft:#48566A;
+    --navy-deep:#111820;
+    --sage:#8FA88C;
+    --shadow-sm:0 8px 24px -14px rgba(21,18,13,0.20);
+    --shadow-lg:0 30px 60px -28px rgba(21,18,13,0.28);
+  }
+  *{box-sizing:border-box; margin:0; padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--paper); color:var(--ink);
+    font-family:'Inter', sans-serif; -webkit-font-smoothing:antialiased;
+    font-size:16px; line-height:1.5;
+  }
+  a{color:inherit; text-decoration:none;}
+  img{max-width:100%; display:block;}
+  .wrap{max-width:1200px; margin:0 auto; padding:0 40px;}
+  section{padding:140px 0;}
+  @media (max-width:900px){ section{padding:88px 0;} }
+  @media (max-width:600px){ .wrap{padding:0 24px;} section{padding:72px 0;} }
+  h1,h2,h3{font-family:'Inter', sans-serif; font-weight:800; letter-spacing:-0.02em; line-height:1.08; color:var(--ink);}
+  .eyebrow{
+    font-size:12.5px; font-weight:600; letter-spacing:0.12em; text-transform:uppercase;
+    color:var(--gold); margin-bottom:18px; display:flex; align-items:center; gap:10px;
+  }
+  .eyebrow::before{content:''; width:26px; height:1px; background:var(--gold);}
+  .lead{color:var(--ink-soft); font-size:17.5px; line-height:1.65;}
+
+  /* ---------- NAV ---------- */
+  header{
+    position:fixed; top:0; left:0; right:0; z-index:200;
+    padding:20px 0; transition:all 0.35s ease;
+    background:var(--paper); box-shadow:0 4px 24px -8px rgba(21,18,13,0.18);
+  }
+  header.scrolled{
+    padding:14px 0;
+  }
+  nav.wrap{display:flex; align-items:center; justify-content:space-between;}
+  .logo{font-family:'Inter', sans-serif; font-weight:700; font-size:19px; color:var(--ink);}
+  .logo em{font-style:normal; color:var(--gold);}
+  .nav-links{display:flex; gap:8px; align-items:center;}
+  .nav-links a{
+    font-size:14px; font-weight:500; padding:9px 16px; border-radius:999px; position:relative;
+    color:var(--ink); transition:background 0.25s ease, color 0.25s ease;
+  }
+  .nav-links a:hover{background:var(--stone);}
+  .nav-links a.active{color:var(--gold); font-weight:600;}
+  .nav-cta{
+    background:var(--ink); color:var(--paper); padding:12px 24px; border-radius:999px;
+    font-size:14px; font-weight:600; transition:background 0.3s ease, transform 0.3s ease;
+    display:inline-flex; align-items:center; gap:8px;
+  }
+  .nav-cta:hover{background:var(--gold); transform:translateY(-1px);}
+  .burger{display:none; flex-direction:column; gap:5px; cursor:pointer; z-index:210;}
+  .burger span{width:24px; height:1.5px; background:var(--ink); transition:0.3s ease;}
+  .mobile-menu{
+    display:none; position:fixed; inset:0; background:var(--paper); z-index:205;
+    flex-direction:column; align-items:flex-start; justify-content:center; gap:8px;
+    padding:0 40px;
+  }
+  .mobile-menu.open{display:flex;}
+  .mobile-menu a{font-family:'Inter', sans-serif; font-weight:700; font-size:32px; padding:10px 0; color:var(--ink);}
+  @media (max-width:880px){ .nav-links,.nav-cta{display:none;} .burger{display:flex;} }
+
+  /* ---------- HERO ---------- */
+  .hero{padding-top:200px; padding-bottom:80px;}
+  .hero-grid{display:grid; grid-template-columns:1.05fr 0.95fr; gap:70px; align-items:center;}
+  @media (max-width:960px){ .hero-grid{grid-template-columns:1fr;} }
+  .hero h1{font-size:clamp(38px,5.2vw,64px); max-width:640px;}
+  .hero h1 em{font-style:normal; color:var(--gold);}
+  .hero p.lead{max-width:460px; margin-top:24px; font-size:18px;}
+  .btn-row{display:flex; gap:14px; flex-wrap:wrap; margin-top:38px;}
+  .btn-primary{
+    background:var(--ink); color:var(--paper); padding:16px 30px; border-radius:999px;
+    font-size:14.5px; font-weight:600; display:inline-flex; align-items:center; gap:10px;
+    transition:background 0.3s ease, transform 0.3s ease;
+  }
+  .btn-primary:hover{background:var(--gold); transform:translateY(-2px);}
+  .btn-ghost{
+    border:1px solid var(--line); padding:16px 30px; border-radius:999px; font-size:14.5px; font-weight:600;
+    transition:border-color 0.3s ease, background 0.3s ease;
+  }
+  .btn-ghost:hover{border-color:var(--ink); background:var(--stone);}
+
+  /* hero photo */
+  .hero-photo{
+    position:relative; border-radius:20px; overflow:hidden; box-shadow:var(--shadow-lg);
+    aspect-ratio:4/5;
+  }
+  .hero-photo img{width:100%; height:100%; object-fit:cover;}
+  @media (max-width:960px){ .hero-photo{aspect-ratio:16/10; margin-top:20px;} }
+
+
+  /* ---------- INCLUDED ---------- */
+  #included{background:var(--stone); border-top:1px solid var(--line); border-bottom:1px solid var(--line);}
+  .included-grid{
+    margin-top:60px; display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  }
+  @media (max-width:800px){ .included-grid{grid-template-columns:1fr 1fr;} }
+  @media (max-width:560px){ .included-grid{grid-template-columns:1fr;} }
+  .inc-card{
+    background:var(--paper); padding:36px 30px; border:1px solid var(--line); border-radius:16px;
+    transition:box-shadow 0.3s ease, transform 0.3s ease, border-color 0.3s ease;
+  }
+  .inc-card:hover{box-shadow:var(--shadow-sm); transform:translateY(-4px); border-color:transparent;}
+  .inc-badge{
+    width:54px; height:54px; border-radius:14px; background:var(--gold-tint);
+    display:flex; align-items:center; justify-content:center; margin-bottom:22px;
+  }
+  .inc-card h3{font-size:18px; font-weight:500; margin-bottom:8px;}
+  .inc-card p.desc{font-size:14px; color:var(--ink-soft);}
+
+  /* ---------- GALLERY ---------- */
+  .gallery-grid{
+    margin-top:52px; display:grid; grid-template-columns:repeat(3, 1fr);
+    grid-auto-rows:200px; grid-auto-flow:dense; gap:20px;
+  }
+  @media (max-width:800px){
+    .gallery-grid{grid-template-columns:1fr 1fr; grid-auto-rows:200px;}
+  }
+  @media (max-width:560px){
+    .gallery-grid{grid-template-columns:1fr; grid-auto-rows:240px;}
+  }
+  .gallery-photo{
+    position:relative; border-radius:16px; overflow:hidden; margin:0; box-shadow:var(--shadow-sm);
+  }
+  .gallery-photo.tall{grid-row:span 2;}
+  .gallery-photo.wide{grid-column:span 2;}
+  @media (max-width:560px){ .gallery-photo.tall, .gallery-photo.wide{grid-column:span 1; grid-row:span 1;} }
+  .gallery-photo img{width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.5s ease;}
+  .gallery-photo:hover img{transform:scale(1.05);}
+  .gallery-photo figcaption{
+    position:absolute; left:0; right:0; bottom:0; padding:14px 16px 12px;
+    font-size:12.5px; font-weight:600; color:var(--paper); letter-spacing:0.02em;
+    background:linear-gradient(0deg, rgba(15,16,19,0.68) 0%, rgba(15,16,19,0) 100%);
+  }
+
+
+  /* ---------- PRICING ---------- */
+  #pricing{background:var(--stone); border-top:1px solid var(--line);}
+  .pricing-grid{display:grid; grid-template-columns:repeat(3,1fr); gap:26px; margin-top:60px;}
+  @media (max-width:860px){ .pricing-grid{grid-template-columns:1fr;} }
+  .tier{
+    background:var(--paper); border:1px solid var(--line); border-radius:18px; padding:40px 34px;
+    transition:box-shadow 0.3s ease, transform 0.3s ease;
+  }
+  .tier:hover{box-shadow:var(--shadow-lg); transform:translateY(-6px);}
+  .tier.featured{border-color:var(--ink); position:relative;}
+  .tier-flag{
+    position:absolute; top:-13px; left:34px; background:var(--gold); color:var(--paper);
+    font-size:11px; font-weight:700; letter-spacing:0.06em; text-transform:uppercase;
+    padding:5px 14px; border-radius:999px;
+  }
+  .tier .range{font-size:12.5px; font-weight:600; color:var(--ink-soft); text-transform:uppercase; letter-spacing:0.06em; margin-bottom:10px;}
+  .tier h3{font-size:21px; margin-bottom:18px;}
+  .tier .price{font-family:'Inter', sans-serif; font-size:38px; font-weight:800; letter-spacing:-0.02em; margin-bottom:26px;}
+  .tier ul{list-style:none; display:grid; gap:13px;}
+  .tier li{font-size:14.5px; color:var(--ink-soft); display:flex; gap:11px; align-items:flex-start;}
+  .tier li svg{flex-shrink:0; margin-top:2px;}
+  .custom-note{margin-top:26px; font-size:14px; color:var(--ink-soft); text-align:center;}
+
+  /* ---------- ADVANTAGE (content left, photo right) ---------- */
+  .advantage{background:var(--paper); border-top:1px solid var(--line);}
+  .adv-split{display:grid; grid-template-columns:1.15fr 0.85fr; gap:64px; align-items:center;}
+  @media (max-width:900px){ .adv-split{grid-template-columns:1fr; gap:36px;} }
+  @media (max-width:900px){ .adv-split .adv-photo{order:-1;} }
+  .adv-photo{border-radius:18px; overflow:hidden; box-shadow:var(--shadow-lg); aspect-ratio:4/5;}
+  .adv-photo img{width:100%; height:100%; object-fit:cover; display:block;}
+  @media (max-width:900px){ .adv-photo{aspect-ratio:16/10;} }
+  .adv-lead{max-width:440px; margin-top:18px; color:var(--ink-soft);}
+  .adv-list{margin-top:40px; display:grid; grid-template-columns:1fr 1fr; gap:28px 24px;}
+  @media (max-width:560px){ .adv-list{grid-template-columns:1fr;} }
+  .adv-row{display:flex; gap:14px; align-items:flex-start;}
+  .adv-badge{
+    width:44px; height:44px; border-radius:12px; background:var(--gold-tint);
+    display:flex; align-items:center; justify-content:center; flex-shrink:0;
+  }
+  .adv-row h3{font-size:16px; font-weight:500; margin-bottom:4px;}
+  .adv-row p{font-size:14px; color:var(--ink-soft); line-height:1.5;}
+
+  /* ---------- CONTACT ---------- */
+  .contact{
+    position:relative; background:var(--stone); border-top:1px solid var(--line);
+  }
+  .contact .wrap{position:relative; z-index:1;}
+  .contact .eyebrow{color:var(--gold);}
+  .contact h2{color:var(--ink);}
+  .contact-intro{text-align:center; max-width:640px; margin:0 auto;}
+  .contact-intro .eyebrow{justify-content:center;}
+  .contact-intro .eyebrow::after{content:''; width:26px; height:1px; background:var(--gold);}
+  .contact-grid{display:grid; grid-template-columns:1fr 1fr; gap:70px; margin-top:56px; align-items:start;}
+  @media (max-width:900px){ .contact-grid{grid-template-columns:1fr; gap:44px;} }
+  .contact-photo{border-radius:16px; overflow:hidden; box-shadow:var(--shadow-sm); margin-bottom:34px;}
+  .contact-photo img{width:100%; height:220px; object-fit:cover; display:block;}
+  .contact-detail{margin-bottom:26px;}
+  .contact-detail .label{font-size:12px; font-weight:700; text-transform:uppercase; letter-spacing:0.08em; color:var(--gold); margin-bottom:6px;}
+  .contact-detail .value{font-size:17px; font-weight:500; color:var(--ink);}
+  .contact-card{background:var(--paper); border-radius:20px; padding:38px; box-shadow:var(--shadow-lg);}
+  .contact-card--calendly{padding:0; background:none; box-shadow:none; border-radius:0; overflow:hidden;}
+  form{display:grid; gap:20px;}
+  .form-row{display:grid; grid-template-columns:1fr 1fr; gap:18px;}
+  @media (max-width:520px){ .form-row{grid-template-columns:1fr;} }
+  label{font-size:12.5px; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; color:var(--ink-soft); display:block; margin-bottom:8px;}
+  input[type=text], input[type=date], input[type=number], select, textarea{
+    width:100%; border:1px solid var(--line); border-radius:10px; background:var(--paper);
+    padding:13px 15px; font-family:'Inter',sans-serif; font-size:14.5px; color:var(--ink);
+    transition:border-color 0.25s ease, box-shadow 0.25s ease;
+  }
+  input:focus, select:focus, textarea:focus{outline:none; border-color:var(--gold); box-shadow:0 0 0 3px var(--gold-tint);}
+  textarea{resize:vertical; min-height:80px;}
+  .submit-btn{
+    justify-self:start; background:var(--ink); color:var(--paper); padding:15px 30px;
+    font-size:14.5px; font-weight:600; border:none; border-radius:999px; cursor:pointer;
+    transition:background 0.3s ease, transform 0.3s ease;
+  }
+  .submit-btn:hover{background:var(--gold); transform:translateY(-2px);}
+
+  footer{padding:44px 0; border-top:1px solid var(--line);}
+  footer .wrap{display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:14px;}
+  .logo--img{display:inline-flex; align-items:center;}
+  .logo--img img{height:64px; width:auto; display:block;}
+  footer .logo--img img{height:48px;}
+  footer .foot-note{font-size:13px; color:var(--ink-faint);}
+
+  .reveal{opacity:0; transform:translateY(28px); transition:opacity 0.8s ease, transform 0.8s ease;}
+  .reveal.in{opacity:1; transform:none;}
+
+  /* ---------- CATEGORY PAGES ---------- */
+  .gallery-photo{cursor:pointer;}
+  .gallery-link{display:contents; color:inherit; text-decoration:none;}
+  .cat-page{
+    position:fixed; inset:0; z-index:300; background:var(--paper);
+    display:none; overflow-y:auto; padding:48px 0 60px;
+  }
+  .cat-page:target{display:block;}
+  .cat-back{
+    display:inline-flex; align-items:center; gap:8px; font-size:14px; font-weight:600;
+    color:var(--ink-soft); margin-bottom:28px; transition:color 0.2s ease;
+  }
+  .cat-back:hover{color:var(--gold);}
+  .cat-page h2{margin-bottom:36px;}
+  .carousel{position:relative; border-radius:18px; overflow:hidden; box-shadow:var(--shadow-lg); background:var(--stone);}
+  .carousel-track{display:flex; transition:transform 0.45s cubic-bezier(0.65,0,0.35,1);}
+  .carousel-slide{flex:0 0 100%; margin:0; aspect-ratio:3/2; overflow:hidden; background:var(--stone);}
+  .carousel-slide img{width:100%; height:100%; object-fit:contain; display:block;}
+  @media (max-width:700px){ .carousel-slide{aspect-ratio:4/3;} }
+  .carousel-btn{
+    position:absolute; top:50%; transform:translateY(-50%); z-index:2;
+    width:46px; height:46px; border-radius:50%; border:none; cursor:pointer;
+    background:rgba(21,18,13,0.55); color:#fff; font-size:22px; display:flex; align-items:center; justify-content:center;
+    transition:background 0.2s ease;
+  }
+  .carousel-btn:hover{background:rgba(21,18,13,0.8);}
+  .carousel-prev{left:16px;} .carousel-next{right:16px;}
+  .carousel[data-count="1"] .carousel-btn, .carousel[data-count="1"] .carousel-dots{display:none;}
+  .carousel-dots{
+    position:absolute; bottom:16px; left:0; right:0; z-index:2;
+    display:flex; justify-content:center; gap:8px;
+  }
+  .carousel-dots .dot{
+    width:8px; height:8px; border-radius:50%; border:none; padding:0; cursor:pointer;
+    background:rgba(255,255,255,0.5); transition:background 0.2s ease, transform 0.2s ease;
+  }
+  .carousel-dots .dot.active{background:#fff; transform:scale(1.25);}
+  .cat-note{margin-top:24px; font-size:13px; color:var(--ink-faint);}
+
+  :focus-visible{outline:2px solid var(--gold); outline-offset:3px;}
+  @media (prefers-reduced-motion: reduce){ *{transition:none !important; scroll-behavior:auto !important;} .reveal{opacity:1; transform:none;} }
+</style>
+</head>
+<body>
+
+<header id="siteHeader">
+  <nav class="wrap">
+    <a href="#home" class="logo logo--img"><img src="images/img-001-d47923181f.png" alt="Every Homes Real Estate Media"></a>
+    <div class="nav-links" id="navLinks">
+      <a href="#included" data-nav>Included</a>
+      <a href="#gallery" data-nav>Gallery</a>
+      <a href="#pricing" data-nav>Pricing</a>
+      <a href="#advantage" data-nav>Why us</a>
+      <a href="#contact" data-nav>Contact</a>
+    </div>
+    <a href="#contact" class="nav-cta">Book now →</a>
+    <div class="burger" id="burger"><span></span><span></span><span></span></div>
+  </nav>
+</header>
+
+<div class="mobile-menu" id="mobileMenu">
+  <a href="#included">Included</a>
+  <a href="#gallery">Gallery</a>
+  <a href="#pricing">Pricing</a>
+  <a href="#advantage">Why us</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="wrap hero-grid">
+    <div>
+      <div class="eyebrow">Real estate photography</div>
+      <h1>Every angle. Every listing. <em>Every time.</em></h1>
+      <p class="lead">Photos, drone, and floor plan — delivered next-day, priced by size.</p>
+      <div class="btn-row">
+        <a href="#contact" class="btn-primary">Check availability →</a>
+        <a href="#pricing" class="btn-ghost">See pricing</a>
+      </div>
+    </div>
+    <div class="hero-photo">
+      <img src="images/img-002-1eeea86afd.jpg" alt="Ranch-style home exterior with mature trees and covered porch">
+    </div>
+  </div>
+</section>
+
+<!-- INCLUDED -->
+<section id="included">
+  <div class="wrap reveal">
+    <div class="eyebrow">Included, every time</div>
+    <h2>What you get. No tiers.</h2>
+    <div class="included-grid">
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <path d="M8.2 6.5L9.4 4.4C9.6 4.1 9.9 4 10.2 4H13.8C14.1 4 14.4 4.1 14.6 4.4L15.8 6.5" stroke="#15120D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="3" y="6.5" width="18" height="13" rx="2.2" stroke="#15120D" stroke-width="1.6"/>
+  <circle cx="12" cy="13.3" r="3.9" stroke="#15120D" stroke-width="1.6"/>
+  <circle cx="12" cy="13.3" r="1.7" fill="#B8862F"/>
+  <circle cx="17.7" cy="9.4" r="0.9" fill="#B8862F"/>
+</svg></div>
+        <h3>Photography</h3>
+        <p class="desc">Interior &amp; exterior, professionally shot and edited.</p>
+      </div>
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <path d="M12 9V4.5M12 15v4M9 12H4.5M15 12h4" stroke="#15120D" stroke-width="1.8" stroke-linecap="round"/>
+  <circle cx="12" cy="4" r="2.3" stroke="#15120D" stroke-width="1.7"/>
+  <circle cx="12" cy="20" r="2.3" stroke="#15120D" stroke-width="1.7"/>
+  <circle cx="4" cy="12" r="2.3" stroke="#15120D" stroke-width="1.7"/>
+  <circle cx="20" cy="12" r="2.3" stroke="#15120D" stroke-width="1.7"/>
+  <rect x="8.7" y="8.7" width="6.6" height="6.6" rx="1.8" fill="#B8862F"/>
+  <path d="M12 15.3v2.2" stroke="#15120D" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="12" cy="18.6" r="1.1" fill="#15120D"/>
+</svg></div>
+        <h3>Drone</h3>
+        <p class="desc">Aerial photography, weather permitting.</p>
+      </div>
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <rect x="3" y="3.5" width="18" height="17" rx="1.4" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M12 3.5V11M12 11H21" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M3 15.5C5.2 15.5 7 13.7 7 11.5" stroke="#B8862F" stroke-width="1.6" stroke-linecap="round"/>
+  <circle cx="14.3" cy="16" r="0.9" fill="#B8862F"/>
+</svg></div>
+        <h3>Floor plan</h3>
+        <p class="desc">Scaled, with room-by-room measurements.</p>
+      </div>
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <path d="M12 3.2A8.8 8.8 0 0 1 20.8 12H12V3.2Z" fill="#B8862F" opacity="0.55"/>
+  <circle cx="12" cy="12" r="8.8" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M12 7.5V12L15.3 14" stroke="#15120D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+        <h3>Next-day delivery</h3>
+        <p class="desc">Full gallery, in your inbox by tomorrow.</p>
+      </div>
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <rect x="3" y="4.2" width="18" height="15.6" rx="2" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M3 8.4H21" stroke="#15120D" stroke-width="1.6"/>
+  <circle cx="5.7" cy="6.3" r="0.55" fill="#15120D"/>
+  <circle cx="7.5" cy="6.3" r="0.55" fill="#15120D"/>
+  <path d="M8 14.2L10.7 17L16.5 11" stroke="#B8862F" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+        <h3>MLS-ready</h3>
+        <p class="desc">Sized and formatted, ready to upload.</p>
+      </div>
+      <div class="inc-card">
+        <div class="inc-badge"><svg width="26" height="26" viewBox="0 0 24 24" fill="none">
+  <path d="M5.2 3.6H8.3L9.7 7.1L7.8 8.7C8.6 10.6 10.1 12.2 12.1 13L13.7 11.1L17.2 12.5V15.6C17.2 16.6 16.4 17.4 15.4 17.3C9.8 16.8 5.5 12.5 5 6.9C4.9 5.9 5.7 3.6 5.2 3.6Z" stroke="#15120D" stroke-width="1.6" stroke-linejoin="round"/>
+  <circle cx="17.5" cy="6" r="2.6" fill="#B8862F"/>
+</svg></div>
+        <h3>Direct contact</h3>
+        <p class="desc">You work with your photographer, not a call center.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="wrap reveal">
+    <div class="eyebrow">Recent work</div>
+    <h2>A gallery, not a snapshot.</h2>
+    <div class="gallery-grid">
+      <a href="#cat-bedroom" class="gallery-link"><figure class="gallery-photo tall">
+        <img src="images/img-003-11f2970117.jpg" alt="Primary bedroom">
+        <figcaption>Bedroom</figcaption>
+      </figure></a>
+      <a href="#cat-bathroom" class="gallery-link"><figure class="gallery-photo">
+        <img src="images/img-004-4f5a8f0c41.jpg" alt="Bathroom with granite counters">
+        <figcaption>Bathroom</figcaption>
+      </figure></a>
+      <a href="#cat-dining" class="gallery-link"><figure class="gallery-photo">
+        <img src="images/img-005-079eaaf86a.jpg" alt="Dining room with deck and lake view">
+        <figcaption>Dining room/Kitchen</figcaption>
+      </figure></a>
+      <a href="#cat-drone" class="gallery-link"><figure class="gallery-photo wide">
+        <img src="images/img-006-c28da37aea.jpg" alt="Aerial view of the property and shoreline">
+        <figcaption>Drone</figcaption>
+      </figure></a>
+      <a href="#cat-twilight" class="gallery-link"><figure class="gallery-photo wide">
+        <img src="images/img-007-a56cb93a2b.jpg" alt="Home exterior at twilight with garage lit up">
+        <figcaption>Twilight exterior</figcaption>
+      </figure></a>
+      <a href="#cat-exterior" class="gallery-link"><figure class="gallery-photo">
+        <img src="images/img-002-1eeea86afd.jpg" alt="Home exterior, daytime">
+        <figcaption>Exterior</figcaption>
+      </figure></a>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="wrap reveal">
+    <div class="eyebrow">Pricing</div>
+    <h2>Priced by size.</h2>
+    <div class="pricing-grid">
+      <div class="tier">
+        <div class="range">Up to 2,000 sq. ft.</div>
+        <h3>Standard Home</h3>
+        <div class="price">$365</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Interior &amp; exterior photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Drone photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Floor plan &amp; measurements</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Next-day delivery</li>
+        </ul>
+      </div>
+      <div class="tier featured">
+        <div class="tier-flag">Most common</div>
+        <div class="range">2,001–3,500 sq. ft.</div>
+        <h3>Large Home</h3>
+        <div class="price">$415</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Interior &amp; exterior photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Drone photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Floor plan &amp; measurements</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Next-day delivery</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="range">3,501–5,000 sq. ft.</div>
+        <h3>Luxury Home</h3>
+        <div class="price">$465</div>
+        <ul>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Interior &amp; exterior photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Drone photography</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Floor plan &amp; measurements</li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#B8862F" stroke-width="2"><path d="M4 12l5 5L20 6"/></svg>Next-day delivery</li>
+        </ul>
+      </div>
+    </div>
+    <p class="custom-note">Over 5,000 sq. ft.? Custom quote.</p>
+  </div>
+</section>
+
+<!-- ADVANTAGE -->
+<section class="advantage" id="advantage">
+  <div class="wrap reveal">
+    <div class="adv-split">
+      <div>
+        <div class="eyebrow">Our advantage</div>
+        <h2>Reliability is the whole model.</h2>
+        <p class="lead adv-lead">We'd rather be the photographer you don't have to think twice about.</p>
+        <div class="adv-list">
+          <div class="adv-row">
+            <div class="adv-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <path d="M8.2 6.5L9.4 4.4C9.6 4.1 9.9 4 10.2 4H13.8C14.1 4 14.4 4.1 14.6 4.4L15.8 6.5" stroke="#15120D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+  <rect x="3" y="6.5" width="18" height="13" rx="2.2" stroke="#15120D" stroke-width="1.6"/>
+  <circle cx="12" cy="13.3" r="3.9" stroke="#15120D" stroke-width="1.6"/>
+  <circle cx="12" cy="13.3" r="1.7" fill="#B8862F"/>
+</svg></div>
+            <div><h3>Consistent style</h3><p>Same look, same edit, listing to listing.</p></div>
+          </div>
+          <div class="adv-row">
+            <div class="adv-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <rect x="3" y="4.5" width="18" height="16" rx="2" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M3 9.5H21" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M7.5 3V6M16.5 3V6" stroke="#15120D" stroke-width="1.6" stroke-linecap="round"/>
+  <rect x="13.6" y="12.3" width="4.4" height="4.4" rx="1" fill="#B8862F"/>
+</svg></div>
+            <div><h3>Fast scheduling</h3><p>Booked within days, not weeks.</p></div>
+          </div>
+          <div class="adv-row">
+            <div class="adv-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <path d="M12 3.2A8.8 8.8 0 0 1 20.8 12H12V3.2Z" fill="#B8862F" opacity="0.55"/>
+  <circle cx="12" cy="12" r="8.8" stroke="#15120D" stroke-width="1.6"/>
+  <path d="M12 7.5V12L15.3 14" stroke="#15120D" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+</svg></div>
+            <div><h3>Next-day turnaround</h3><p>No exceptions, ever.</p></div>
+          </div>
+          <div class="adv-row">
+            <div class="adv-badge"><svg width="20" height="20" viewBox="0 0 24 24" fill="none">
+  <path d="M12.4 3.6H19.4C20 3.6 20.4 4 20.4 4.6V11.6C20.4 11.9 20.3 12.2 20.1 12.4L11.6 20.9C11.1 21.4 10.3 21.4 9.8 20.9L3.6 14.7C3.1 14.2 3.1 13.4 3.6 12.9L12.1 4.4C12.3 4.1 12.6 3.6 12.4 3.6Z" stroke="#15120D" stroke-width="1.6" stroke-linejoin="round"/>
+  <circle cx="16.3" cy="7.7" r="1.7" fill="#B8862F"/>
+</svg></div>
+            <div><h3>Straightforward pricing</h3><p>One number, based on size. No add-ons.</p></div>
+          </div>
+        </div>
+      </div>
+      <div class="adv-photo">
+        <img src="images/img-002-1eeea86afd.jpg" alt="Home exterior, daytime">
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="wrap reveal">
+    <div class="contact-intro">
+      <div class="eyebrow">Book a shoot</div>
+      <h2>Address and size. That's it.</h2>
+    </div>
+    <div class="contact-grid">
+      <div>
+        <div class="contact-photo"><img src="images/img-007-a56cb93a2b.jpg" alt="Home exterior at twilight"></div>
+        <div class="contact-detail"><div class="label">Email</div><div class="value">everyhomes@gmail.com</div></div>
+        <div class="contact-detail"><div class="label">Phone</div><div class="value">(810) 644-6583</div></div>
+        <div class="contact-detail"><div class="label">Turnaround</div><div class="value">Next-day, guaranteed</div></div>
+      </div>
+      <div class="contact-card contact-card--calendly">
+        <div class="calendly-inline-widget"
+             data-url="https://calendly.com/sethhobbsenterprise/30min?hide_gdpr_banner=1&hide_event_type_details=1&background_color=faf8f4&text_color=15120d&primary_color=b8862f"
+             style="min-width:280px; height:520px;"></div>
+      </div>
+      <link href="https://assets.calendly.com/assets/external/widget.css" rel="stylesheet">
+      <script src="https://assets.calendly.com/assets/external/widget.js" async></script>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap">
+    <div class="logo logo--img"><img src="images/img-001-d47923181f.png" alt="Every Homes Real Estate Media"></div>
+    <div class="foot-note">© 2026 Common Grounds. Priced by size. Delivered by tomorrow.</div>
+  </div>
+</footer>
+
+<section class="cat-page" id="cat-bedroom">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Bedroom</h2>
+    <div class="carousel" data-count="6">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-008-5381616448.jpg" alt="Bedroom photo 1"></figure>
+        <figure class="carousel-slide"><img src="images/img-009-ac257730ce.jpg" alt="Bedroom photo 2"></figure>
+        <figure class="carousel-slide"><img src="images/img-010-c8535e575e.jpg" alt="Bedroom photo 3"></figure>
+        <figure class="carousel-slide"><img src="images/img-011-c21a92b3ae.jpg" alt="Bedroom photo 4"></figure>
+        <figure class="carousel-slide"><img src="images/img-012-2a835abd84.jpg" alt="Bedroom photo 5"></figure>
+        <figure class="carousel-slide"><img src="images/img-013-0c413bdfdd.jpg" alt="Bedroom photo 6"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+        <button class="dot" data-index="5" aria-label="Photo 6"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-page" id="cat-bathroom">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Bathroom</h2>
+    <div class="carousel" data-count="5">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-014-16186d25e5.jpg" alt="Bathroom photo 1"></figure>
+        <figure class="carousel-slide"><img src="images/img-015-900132a8b0.jpg" alt="Bathroom photo 2"></figure>
+        <figure class="carousel-slide"><img src="images/img-016-2a622ef204.jpg" alt="Bathroom photo 3"></figure>
+        <figure class="carousel-slide"><img src="images/img-017-6fa98a7512.jpg" alt="Bathroom photo 4"></figure>
+        <figure class="carousel-slide"><img src="images/img-018-d692ea02c7.jpg" alt="Bathroom photo 5"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-page" id="cat-dining">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Dining room/Kitchen</h2>
+    <div class="carousel" data-count="5">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-019-36f77b1120.jpg" alt="Dining room/kitchen photo 1"></figure>
+        <figure class="carousel-slide"><img src="images/img-020-8d6aa53b6a.jpg" alt="Dining room/kitchen photo 2"></figure>
+        <figure class="carousel-slide"><img src="images/img-021-60f019a530.jpg" alt="Dining room/kitchen photo 3"></figure>
+        <figure class="carousel-slide"><img src="images/img-022-812f2f26c7.jpg" alt="Dining room/kitchen photo 4"></figure>
+        <figure class="carousel-slide"><img src="images/img-023-8cbd544ee0.jpg" alt="Dining room/kitchen photo 5"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-page" id="cat-twilight">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Twilight exterior</h2>
+    <div class="carousel" data-count="5">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-024-7fdc3006e6.jpg" alt="Twilight exterior photo 1"></figure>
+        <figure class="carousel-slide"><img src="images/img-025-7c2ad3a4c0.jpg" alt="Twilight exterior photo 2"></figure>
+        <figure class="carousel-slide"><img src="images/img-026-9d7466480f.jpg" alt="Twilight exterior photo 3"></figure>
+        <figure class="carousel-slide"><img src="images/img-027-8b9173d879.jpg" alt="Twilight exterior photo 4"></figure>
+        <figure class="carousel-slide"><img src="images/img-028-4238dcf40d.jpg" alt="Twilight exterior photo 5"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-page" id="cat-exterior">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Exterior</h2>
+    <div class="carousel" data-count="16">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-029-5e5d4c3017.jpg" alt="Exterior photo 1"></figure>
+        <figure class="carousel-slide"><img src="images/img-030-b6a643215b.jpg" alt="Exterior photo 2"></figure>
+        <figure class="carousel-slide"><img src="images/img-031-9a4cc855a5.jpg" alt="Exterior photo 3"></figure>
+        <figure class="carousel-slide"><img src="images/img-032-b766323e66.jpg" alt="Exterior photo 4"></figure>
+        <figure class="carousel-slide"><img src="images/img-033-b4e2598fb2.jpg" alt="Exterior photo 5"></figure>
+        <figure class="carousel-slide"><img src="images/img-034-8db5c391b0.jpg" alt="Exterior photo 6"></figure>
+        <figure class="carousel-slide"><img src="images/img-035-110c819e30.jpg" alt="Exterior photo 7"></figure>
+        <figure class="carousel-slide"><img src="images/img-036-18e7e16aab.jpg" alt="Exterior photo 8"></figure>
+        <figure class="carousel-slide"><img src="images/img-037-65f59e7425.jpg" alt="Exterior photo 9"></figure>
+        <figure class="carousel-slide"><img src="images/img-038-0e23540cac.jpg" alt="Exterior photo 10"></figure>
+        <figure class="carousel-slide"><img src="images/img-039-ebc7b408b5.jpg" alt="Exterior photo 11"></figure>
+        <figure class="carousel-slide"><img src="images/img-040-9eac8c56e6.jpg" alt="Exterior photo 12"></figure>
+        <figure class="carousel-slide"><img src="images/img-041-5745d1bc3e.jpg" alt="Exterior photo 13"></figure>
+        <figure class="carousel-slide"><img src="images/img-042-efc86c0a16.jpg" alt="Exterior photo 14"></figure>
+        <figure class="carousel-slide"><img src="images/img-043-b5ae1047e4.jpg" alt="Exterior photo 15"></figure>
+        <figure class="carousel-slide"><img src="images/img-044-df4ec0b192.jpg" alt="Exterior photo 16"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+        <button class="dot" data-index="5" aria-label="Photo 6"></button>
+        <button class="dot" data-index="6" aria-label="Photo 7"></button>
+        <button class="dot" data-index="7" aria-label="Photo 8"></button>
+        <button class="dot" data-index="8" aria-label="Photo 9"></button>
+        <button class="dot" data-index="9" aria-label="Photo 10"></button>
+        <button class="dot" data-index="10" aria-label="Photo 11"></button>
+        <button class="dot" data-index="11" aria-label="Photo 12"></button>
+        <button class="dot" data-index="12" aria-label="Photo 13"></button>
+        <button class="dot" data-index="13" aria-label="Photo 14"></button>
+        <button class="dot" data-index="14" aria-label="Photo 15"></button>
+        <button class="dot" data-index="15" aria-label="Photo 16"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="cat-page" id="cat-drone">
+  <div class="wrap">
+    <a href="#gallery" class="cat-back">&larr; Back to gallery</a>
+    <h2>Drone</h2>
+    <div class="carousel" data-count="5">
+      <div class="carousel-track">
+        <figure class="carousel-slide"><img src="images/img-045-f17224c7a7.jpg" alt="Drone photo, shoreline"></figure>
+        <figure class="carousel-slide"><img src="images/img-046-1ced7b32e4.jpg" alt="Drone photo, back deck"></figure>
+        <figure class="carousel-slide"><img src="images/img-047-6a0696448d.jpg" alt="Drone photo, aerial view of barn"></figure>
+        <figure class="carousel-slide"><img src="images/img-048-1419a4fb70.jpg" alt="Drone photo, aerial property view"></figure>
+        <figure class="carousel-slide"><img src="images/img-049-9918fc073d.jpg" alt="Drone photo, wide aerial landscape"></figure>
+      </div>
+      <button class="carousel-btn carousel-prev" aria-label="Previous photo">&#8249;</button>
+      <button class="carousel-btn carousel-next" aria-label="Next photo">&#8250;</button>
+      <div class="carousel-dots">
+        <button class="dot active" data-index="0" aria-label="Photo 1"></button>
+        <button class="dot" data-index="1" aria-label="Photo 2"></button>
+        <button class="dot" data-index="2" aria-label="Photo 3"></button>
+        <button class="dot" data-index="3" aria-label="Photo 4"></button>
+        <button class="dot" data-index="4" aria-label="Photo 5"></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  // photo carousels on each category page
+  document.querySelectorAll('.carousel').forEach(carousel => {
+    const track = carousel.querySelector('.carousel-track');
+    const slides = carousel.querySelectorAll('.carousel-slide');
+    const dots = carousel.querySelectorAll('.dot');
+    const prevBtn = carousel.querySelector('.carousel-prev');
+    const nextBtn = carousel.querySelector('.carousel-next');
+    let index = 0;
+    const count = slides.length;
+
+    function update() {
+      track.style.transform = `translateX(-${index * 100}%)`;
+      dots.forEach((d, i) => d.classList.toggle('active', i === index));
+    }
+    function go(i) {
+      index = (i + count) % count;
+      update();
+    }
+    prevBtn && prevBtn.addEventListener('click', () => go(index - 1));
+    nextBtn && nextBtn.addEventListener('click', () => go(index + 1));
+    dots.forEach(dot => dot.addEventListener('click', () => go(parseInt(dot.dataset.index, 10))));
+
+    // touch swipe support
+    let startX = null;
+    track.addEventListener('touchstart', e => { startX = e.touches[0].clientX; }, {passive:true});
+    track.addEventListener('touchend', e => {
+      if (startX === null) return;
+      const dx = e.changedTouches[0].clientX - startX;
+      if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
+      startX = null;
+    });
+  });
+
+  const header = document.getElementById('siteHeader');
+  window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 40));
+
+  const burger = document.getElementById('burger');
+  const mobileMenu = document.getElementById('mobileMenu');
+  burger.addEventListener('click', () => mobileMenu.classList.toggle('open'));
+  mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', () => mobileMenu.classList.remove('open')));
+
+  // active nav link on scroll
+  const navLinks = document.querySelectorAll('[data-nav]');
+  const sections = ['included','gallery','pricing','advantage','contact'].map(id => document.getElementById(id));
+  const navObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if(entry.isIntersecting){
+        navLinks.forEach(l => l.classList.remove('active'));
+        const match = document.querySelector(`[data-nav][href="#${entry.target.id}"]`);
+        if(match) match.classList.add('active');
+      }
+    });
+  }, { rootMargin: '-40% 0px -50% 0px' });
+  sections.forEach(s => s && navObserver.observe(s));
+
+  // reveal on scroll
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => { if(entry.isIntersecting){ entry.target.classList.add('in'); io.unobserve(entry.target); } });
+  }, { threshold: 0.12 });
+  document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+
+
+</script>
+
+</body>
+</html>
